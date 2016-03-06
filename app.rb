@@ -40,7 +40,7 @@ def star_string_divider
   $report_file.puts "********************************************************************************"
 end
 
-#def print_date # Print today's date
+# def print_date # Print today's date
   #time = Time.new
   #$report_file.puts time.strftime("Current date: %m/%d/%Y")
 #end
