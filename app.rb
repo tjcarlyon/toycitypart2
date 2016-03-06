@@ -1,6 +1,8 @@
 require 'json'
 require 'date'
-# methods go here
+
+
+#methods
 
 def start
   setup_files # load, read, parse, and create the files
@@ -87,3 +89,5 @@ end
   
 
 #start
+
+
