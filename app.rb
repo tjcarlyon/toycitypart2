@@ -1,5 +1,6 @@
 require 'json'
 require 'date'
+require 'artii'
 # methods go here
 
 def start
@@ -14,58 +15,36 @@ def setup_files #method to open the JSON file and parse the data
     $report_file = File.new("report.txt", "w+")
 end
 
-def create_report # start report generation
-  sales_header
-  print_date
-  products_header
+def create_report # start report generation, this is also the order they appear in report.txt
+  artii_report
+  artii_products
   parse_products
-  brands_report_header
+  artii_brands
   parse_brands
 end
 
-def sales_header # Print "Sales Report" in ascii art
-  $report_file.puts "  #####                                 ######                            "
-  $report_file.puts " #     #   ##   #      ######  ####     #     # ###### #####   ####  #####  #####"
-  $report_file.puts " #        #  #  #      #      #         #     # #      #    # #    # #    #   # "
-  $report_file.puts "  #####  #    # #      #####   ####     ######  #####  #    # #    # #    #   # "
-  $report_file.puts "       # ###### #      #           #    #   #   #      #####  #    # #####    #"
-  $report_file.puts " #     # #    # #      #      #    #    #    #  #      #      #    # #   #    #  "
-  $report_file.puts "  #####  #    # ###### ######  ####     #     # ###### #       ####  #    #   # "
-  star_string_divider
-  star_string_divider
-  star_string_divider
-  $report_file.puts " "
-  $report_file.puts " "
-  $report_file.puts " "
-  $report_file.puts " "
-  
+def artii_report 
+    a = Artii::Base.new :font => 'slant'
+    $report_file.puts a.asciify("Sales Report")
+    $report_file.puts "*" * 11 + Date.today.strftime('%a %d %b %Y') + "*" * 11
 end
 
-def star_string_divider
-  $report_file.puts "********************************************************************************"
+
+def section_divider
+  $report_file.puts "*" * 40
 end
 
-def print_date # Print today's date
-  time = Time.new
-  $report_file.puts time.strftime("Current date: %m/%d/%Y")
+
+def artii_products
+    a = Artii::Base.new :font => 'slant'
+    $report_file.puts a.asciify("Products")
 end
 
-def products_header # Print "Products" in ascii art
-  $report_file.puts "                     _            _       "
-  $report_file.puts "                    | |          | |      "
-  $report_file.puts " _ __  _ __ ___   __| |_   _  ___| |_ ___ "
-  $report_file.puts "| '_ \\| '__/ _ \\ / _` | | | |/ __| __/ __|"
-  $report_file.puts "| |_) | | | (_) | (_| | |_| | (__| |_\\__ \\"
-  $report_file.puts "| .__/|_|  \\___/ \\__,_|\\__,_|\\___|\\__|___/"
-  $report_file.puts "| |                                       "
-  $report_file.puts "|_|                                       "
-  star_string_divider
-end
 
 def parse_products
   $products_hash["items"].each do |toy| # For each product in the data set:
     print_item_data(toy)
-    star_string_divider
+    section_divider
   end
 end
 
@@ -84,16 +63,11 @@ def calc_total_sales_products(toy)
   return total_sales
 end
 
-def brands_report_header # Print "Brands" in ascii art
-  $report_file.puts " _                         _     "
-  $report_file.puts "| |                       | |    "
-  $report_file.puts "| |__  _ __ __ _ _ __   __| |___ "
-  $report_file.puts "| '_ \\| '__/ _` | '_ \\ / _` / __|"
-  $report_file.puts "| |_) | | | (_| | | | | (_| \\__ \\"
-  $report_file.puts "|_.__/|_|  \\__,_|_| |_|\\__,_|___/"
-  $report_file.puts
-  star_string_divider
+def artii_brands
+    a = Artii::Base.new :font => 'slant'
+    $report_file.puts a.asciify("Brands")
 end
+
 
 def parse_brands # For each brand in the data set:
   unique_brands = $products_hash["items"].map { |item| item["brand"] }.uniq
@@ -120,4 +94,3 @@ end
 
 
 start
-
