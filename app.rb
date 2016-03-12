@@ -1,7 +1,7 @@
 require 'json'
 require 'date'
 require 'artii'
-# methods go here
+
 
 def start
    setup_files # load, read, parse, and create the files
